@@ -1,0 +1,34 @@
+server:
+  port: 9090
+
+spring:
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:9191
+          predicates:
+            - Path=/api/auth/**
+        - id: customer-service
+          uri: http://localhost:9194
+          predicates:
+            - Path=/api/customers/**
+          filters:
+            - name: AddAuthUserIdHeaderFilter
+        - id: business-service
+          uri: http://localhost:9195
+          predicates:
+            - Path=/api/businesses/**,/api/business-owners/**
+          filters:
+            - name: AddAuthUserIdHeaderFilter
+
+        - id: appointment-service
+          uri: http://localhost:9197
+          predicates:
+            - Path=/api/appointment/**
+
+jwt:
+  secret: q0+DTRJNAJzq8FXZHweVp8RUAEDCrEFwn7IuVyb8If70sZzmmTlRs+UE/zeq3kJzMRIrkVXtRuC14vXNAr8xfQ==
