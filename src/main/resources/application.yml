@@ -7,6 +7,9 @@ spring:
 
   cloud:
     gateway:
+
+      default-filters:
+        - name: AddAuthUserIdHeaderFilter
       routes:
         - id: auth-service
           uri: http://localhost:9191
@@ -16,19 +19,30 @@ spring:
           uri: http://localhost:9194
           predicates:
             - Path=/api/customers/**
-          filters:
-            - name: AddAuthUserIdHeaderFilter
         - id: business-service
           uri: http://localhost:9195
           predicates:
             - Path=/api/businesses/**,/api/business-owners/**
-          filters:
-            - name: AddAuthUserIdHeaderFilter
-
         - id: appointment-service
           uri: http://localhost:9197
           predicates:
-            - Path=/api/appointment/**
+            - Path=/api/appointments/**
+
+      globalcors:
+        corsConfigurations:
+          '[/**]': # Bütün yollar üçün tətbiq olunur
+            allowedOrigins: "http://localhost:3000" # Front-endinizin işlədiyi URL-i bura yazın
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders: "*" # Bütün başlıqlara icazə ver
+            allowCredentials: true # Cookie və auth header-ləri kimi credential-ları ötürməyə icazə ver
+            maxAge: 3600 # Pre-flight (OPTIONS) sorğularının keşlənmə müddəti
+
 
 jwt:
   secret: q0+DTRJNAJzq8FXZHweVp8RUAEDCrEFwn7IuVyb8If70sZzmmTlRs+UE/zeq3kJzMRIrkVXtRuC14vXNAr8xfQ==
