@@ -30,8 +30,10 @@ spring:
 
       globalcors:
         corsConfigurations:
-          '[/**]': # Bütün yollar üçün tətbiq olunur
-            allowedOrigins: "http://localhost:3000" # Front-endinizin işlədiyi URL-i bura yazın
+          '[/**]':
+            allowedOrigins:
+            - "http://localhost:3000"
+            - "http://127.0.0.1:3000"
             allowedMethods:
               - GET
               - POST
@@ -46,3 +48,5 @@ spring:
 
 jwt:
   secret: q0+DTRJNAJzq8FXZHweVp8RUAEDCrEFwn7IuVyb8If70sZzmmTlRs+UE/zeq3kJzMRIrkVXtRuC14vXNAr8xfQ==
+  expiration:
+    ms: 300000
